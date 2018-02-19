@@ -1,0 +1,39 @@
+{
+  "name": "gendiff-sethlans",
+  "version": "0.0.1",
+  "description": "cli-compare two files and show diffirencies",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "babel-node": "babel-node",
+    "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
+    "prepublishOnly": "npm run build",
+    "eslint": "eslint"
+  },
+  "bin" : {
+    "gendiff" : "dist/bin/gendiff.js"
+  },
+  "devDependencies": {
+    "babel-cli": "*",
+    "babel-core": "*",
+    "babel-preset-env": "*",
+    "babel-preset-stage-0": "*",
+    "eslint": "*",
+    "eslint-config-airbnb-base": "*",
+    "eslint-plugin-import": "*",
+    "babel-eslint": "*"
+  },
+  "dependencies": {
+    "commander": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sethlan/project-lvl2-s193.git"
+  },
+  "author": "sethlans",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sethlan/project-lvl2-s193/issues"
+  },
+  "homepage": "https://github.com/sethlan/project-lvl2-s193#readme"
+}
