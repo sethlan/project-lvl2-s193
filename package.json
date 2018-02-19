@@ -1,6 +1,6 @@
 {
   "name": "gendiff-sethlans",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "cli-compare two files and show diffirencies",
   "main": "src/index.js",
   "scripts": {
@@ -10,8 +10,11 @@
     "prepublishOnly": "npm run build",
     "eslint": "eslint"
   },
+  "files": [
+    "dist"
+  ],
   "bin" : {
-    "gendiff" : "dist/bin/gendiff.js"
+    "gendiff": "dist/bin/gendiff.js"
   },
   "devDependencies": {
     "babel-cli": "*",
