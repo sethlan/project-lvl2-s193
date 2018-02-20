@@ -1,10 +1,10 @@
 {
   "name": "gendiff-sethlans",
-  "version": "0.0.6",
+  "version": "0.1.1",
   "description": "cli-compare two files and show diffirencies",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "babel-node": "babel-node",
     "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
     "prepublishOnly": "npm run build",
@@ -13,7 +13,7 @@
   "files": [
     "dist"
   ],
-  "bin" : {
+  "bin": {
     "gendiff": "dist/bin/gendiff.js"
   },
   "devDependencies": {
@@ -21,13 +21,18 @@
     "babel-core": "*",
     "babel-preset-env": "*",
     "babel-preset-stage-0": "*",
+    "babel-jest": "*",
     "eslint": "*",
     "eslint-config-airbnb-base": "*",
     "eslint-plugin-import": "*",
-    "babel-eslint": "*"
+    "eslint-plugin-jest": "*",
+    "babel-eslint": "*",
+    "jest": "*",
+    "jest-cli": "*"
   },
   "dependencies": {
-    "commander": "*"
+    "commander": "*",
+    "lodash": "*"
   },
   "repository": {
     "type": "git",
