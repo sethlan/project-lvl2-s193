@@ -1,0 +1,9 @@
+---
+
+plugins:
+  - jest
+
+parser: babel-eslint
+
+extends:
+  - 'plugin:jest/recommended'

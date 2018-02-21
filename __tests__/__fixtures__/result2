@@ -1,0 +1,7 @@
+{
+- plugins: jest
++ plugins: jest
+- parser: babel-eslint
+- extends: plugin:jest/recommended
++ extends: plugin:flowtype/recommended
+}

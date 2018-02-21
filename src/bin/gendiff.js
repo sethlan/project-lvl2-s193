@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import program from 'commander';
-import fs from 'fs';
+// import fs from 'fs';
 import { version } from '../../package.json';
 import gendiff from '..';
 
@@ -17,6 +17,7 @@ program
   .option('-f, --format [type]', 'Output format')
   .parse(process.argv);
 if (!(path1 === undefined || path2 === undefined)) {
-  const diff = gendiff(fs.readFileSync(path1), fs.readFileSync(path2));
+  // const diff = gendiff(fs.readFileSync(path1), fs.readFileSync(path2));
+  const diff = gendiff(path1, path2);
   console.log(diff);
 }
