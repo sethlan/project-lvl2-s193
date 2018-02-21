@@ -33,7 +33,8 @@
   "dependencies": {
     "commander": "*",
     "lodash": "*",
-    "js-yaml": "*"
+    "js-yaml": "*",
+    "ini": "*"
   },
   "repository": {
     "type": "git",

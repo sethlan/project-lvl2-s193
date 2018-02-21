@@ -2,15 +2,17 @@ import _ from 'lodash';
 import fs from 'fs';
 import path from 'path';
 import yaml from 'js-yaml';
+import ini from 'ini';
 
 const gendiff = (path1, path2) => {
   const adapter = {
     '.json': file => JSON.parse(file),
     '.yml': file => yaml.safeLoad(file),
+    '.ini': file => ini.parse(file),
   };
   const ext = path.extname(path1);
-  const file1 = fs.readFileSync(path1);
-  const file2 = fs.readFileSync(path2);
+  const file1 = fs.readFileSync(path1, 'utf-8');
+  const file2 = fs.readFileSync(path2, 'utf-8');
   const obj1 = adapter[ext](file1);
   const obj2 = adapter[ext](file2);
   const keys = _.union(_.keys(obj1), _.keys(obj2));
