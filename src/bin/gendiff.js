@@ -4,17 +4,19 @@ import fs from 'fs';
 import { version } from '../../package.json';
 import gendiff from '..';
 
-let json1;
-let json2;
+let path1;
+let path2;
 program
   .version(version)
   .description('Compares two configuration files and shows a difference.')
   .arguments('<firstConfig> <secondConfig>')
   .action((firstConfig, secondConfig) => {
-    json1 = firstConfig;
-    json2 = secondConfig;
+    path1 = firstConfig || undefined;
+    path2 = secondConfig || undefined;
   })
   .option('-f, --format [type]', 'Output format')
   .parse(process.argv);
-const diff = gendiff(fs.readFileSync(json1), fs.readFileSync(json2));
-console.log(diff);
+if (!(path1 === undefined || path2 === undefined)) {
+  const diff = gendiff(fs.readFileSync(path1), fs.readFileSync(path2));
+  console.log(diff);
+}
