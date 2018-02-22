@@ -6,9 +6,9 @@ import ini from 'ini';
 
 const gendiff = (path1, path2) => {
   const adapter = {
-    '.json': file => JSON.parse(file),
-    '.yml': file => yaml.safeLoad(file),
-    '.ini': file => ini.parse(file),
+    '.json': JSON.parse,
+    '.yml': yaml.safeLoad,
+    '.ini': ini.parse,
   };
   const ext = path.extname(path1);
   const file1 = fs.readFileSync(path1, 'utf-8');
