@@ -15,25 +15,28 @@ const gendiff = (path1, path2) => {
   const fileContent2 = fs.readFileSync(path2, 'utf-8');
   const obj1 = adapter[ext](fileContent1);
   const obj2 = adapter[ext](fileContent2);
-  // console.log(JSON.stringify(obj1), JSON.stringify(obj2));
-  /* {
-    "plugins":["jest"],
-    "env":{"node":true},
-    "parser":"babel-eslint",
-    "extends":["airbnb-base",
-    "plugin:jest/recommended"],
-    "rules":{"no-console":0}} {"plugins":["jest","flowtype"],
-    "env":{"jest":true},
-    "parser":"babel-eslint",
-    "extends":["airbnb-base","plugin:jest/recommended","plugin:flowtype/recommended"],
-    "rules":{"no-console":0,"react/jsx-no-bind":0}
-  } */
   const makeDiffAst = (before, after) => {
     const keys = _.union(_.keys(before), _.keys(after));
     const ast = keys.map((key) => {
-      if ((before[key] instanceof Array) || (after[key] instanceof Array)) {
+      if ((before[key] instanceof Array) && (after[key] instanceof Array)) {
+        const result = [];
+        for (let count = 0; count < Math.max(before[key].length, after[key].length); count += 1) {
+          if (after[key].includes(before[key][count])) {
+            result.push({
+              name: '', difference: '', value: before[key][count], children: '',
+            });
+          } else if (before[key][count]) {
+            result.push({
+              name: '', difference: '-', value: before[key][count], children: '',
+            });
+          } else if (after[key][count]) {
+            result.push({
+              name: '', difference: '+', value: after[key][count], children: '',
+            });
+          }
+        }
         return {
-          name: key, difference: '', value: '', children: before[key],
+          name: key, difference: '', value: '', children: result,
         };
       }
       if ((before[key] instanceof Object) && (after[key] instanceof Object)) {
@@ -74,14 +77,15 @@ const gendiff = (path1, path2) => {
   const ast = makeDiffAst(obj1, obj2);
   console.log(JSON.stringify(ast));
   const render = (astree) => {
-    if (!astree) { return ''; }
+    if (astree === undefined) { return ''; }
     const result = astree.map((e) => {
+      if (e instanceof Array) { return `\t  ${e.name}: ${render(e)}`; }
       if (e.children !== '') {
         return `  ${e.name}: ${render(e.children)}`;
       }
       return `${e.difference} ${e.name}: ${e.value}`;
     });
-    return `{\n${result.join('\n')}}`;
+    return `{\n${result.join('\n\t')}}`;
   };
   return render(ast);
 };
