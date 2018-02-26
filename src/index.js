@@ -72,6 +72,19 @@ const gendiff = (path1, path2, format = 'default') => {
     });
     return `{\n${result.join('\n')}\n${'\t'.repeat(level - 1)}}`;
   };
+  const plainRender = (ast, level = 1) => {
+    const result = ast.map((element) => {
+      switch (element.type) {
+        case 'nested': return `${'\t'.repeat(level)}  ${element.name}: ${defaultRender(element.children, level + 1)}`;
+        case 'not changed': return `${'\t'.repeat(level)}  ${element.name}: ${element.value}`;
+        case 'changed': return `${'\t'.repeat(level)}- ${element.name}: ${element.value.old}\n\t+ ${element.name}: ${element.value.new}`;
+        case 'deleted': return `${'\t'.repeat(level)}- ${element.name}: ${element.value}`;
+        case 'inserted': return `${'\t'.repeat(level)}+ ${element.name}: ${element.value}`;
+        default: return '';
+      }
+    });
+    return `{\n${result.join('\n')}\n${'\t'.repeat(level - 1)}}`;
+  };
   const render = format === 'default' ? defaultRender : plainRender;
   return render(diffAst);
 };
