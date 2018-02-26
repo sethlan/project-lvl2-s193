@@ -4,6 +4,13 @@ import path from 'path';
 import yaml from 'js-yaml';
 import ini from 'ini';
 
+const tab = (times) => {
+  let result = '';
+  for (let i = 0; i < times; i += 1) {
+    result += '\t';
+  }
+  return result;
+};
 const gendiff = (path1, path2) => {
   const adapter = {
     '.json': JSON.parse,
@@ -15,6 +22,86 @@ const gendiff = (path1, path2) => {
   const fileContent2 = fs.readFileSync(path2, 'utf-8');
   const obj1 = adapter[ext](fileContent1);
   const obj2 = adapter[ext](fileContent2);
+  const keyTypes = [{
+    type: 'nested',
+    check: (first, second, key) => (first[key] instanceof Object && second[key] instanceof Object)
+    && !(first[key] instanceof Array && second[key] instanceof Array),
+    process: (first, second, fun) => fun(first, second),
+  },
+  {
+    type: 'not changed',
+    check: (first, second, key) => (_.has(first, key) && _.has(second, key)
+    && (first[key] === second[key])),
+    process: first => _.identity(first),
+  },
+  {
+    type: 'changed',
+    check: (first, second, key) => (_.has(first, key) && _.has(second, key)
+      && (first[key] !== second[key])),
+    process: (first, second) => ({ old: first, new: second }),
+  },
+  {
+    type: 'deleted',
+    check: (first, second, key) => (_.has(first, key) && !_.has(second, key)),
+    process: first => _.identity(first),
+  },
+  {
+    type: 'inserted',
+    check: (first, second, key) => (!_.has(first, key) && _.has(second, key)),
+    process: (first, second) => _.identity(second),
+  },
+  ];
+  const getAst = (firstConfig = {}, secondConfig = {}) => {
+    const configsKeys = _.union(Object.keys(firstConfig), Object.keys(secondConfig));
+    return configsKeys.map((key) => {
+      const { type, process } = _.find(
+        keyTypes,
+        item => item.check(firstConfig, secondConfig, key),
+      );
+      const value = process(firstConfig[key], secondConfig[key], getAst);
+      return { name: key, type, value };
+    });
+  };
+  const diffAst = getAst(obj1, obj2);
+  // console.log(JSON.stringify(diffAst));
+  // const renderTypes = [{
+  //   type: 'nested',
+  //   toString: (ast, fun) => fun(ast),
+  // },
+  // {
+  //   type: 'not changed',
+  //   toString: ast => (ast),
+  // },
+  // {
+  //   type: 'changed',
+  //   check: (first, second, key) => (_.has(first, key) && _.has(second, key)
+  //     && (first[key] !== second[key])),
+  //   process: (first, second) => ({ old: first, new: second }),
+  // },
+  // {
+  //   type: 'deleted',
+  //   check: (first, second, key) => (_.has(first, key) && !_.has(second, key)),
+  //   process: first => _.identity(first),
+  // },
+  // {
+  //   type: 'inserted',
+  //   check: (first, second, key) => (!_.has(first, key) && _.has(second, key)),
+  //   process: (first, second) => _.identity(second),
+  // },
+  // ];
+  const render = (ast, level = 1) => {
+    const result = ast.map((element) => {
+      if (element.type === 'nested') { return `${tab(level)}  ${element.name}: ${render(element.value, level + 1)}`; }
+      if (element.type === 'not changed') { return `${tab(level)}  ${element.name}: ${element.value}`; }
+      if (element.type === 'changed') { return `${tab(level)}- ${element.name}: ${element.value.old}\n\t+ ${element.name}: ${element.value.new}`; }
+      if (element.type === 'deleted') { return `${tab(level)}- ${element.name}: ${element.value}`; }
+      if (element.type === 'inserted') { return `${tab(level)}+ ${element.name}: ${element.value}`; }
+      return '';
+    });
+    return `{\n${result.join('\n')}\n${tab(level - 1)}}`;
+  };
+  return render(diffAst);
+  /*
   const makeDiffAst = (before, after) => {
     const keys = _.union(_.keys(before), _.keys(after));
     const ast = keys.map((key) => {
@@ -78,15 +165,17 @@ const gendiff = (path1, path2) => {
   console.log(JSON.stringify(ast));
   const render = (astree) => {
     if (astree === undefined) { return ''; }
+    console.log(astree);
     const result = astree.map((e) => {
       if (e instanceof Array) { return `\t  ${e.name}: ${render(e)}`; }
       if (e.children !== '') {
         return `  ${e.name}: ${render(e.children)}`;
       }
+      if (e.name === '') { return `\t${e.difference} ${e.value}`; }
       return `${e.difference} ${e.name}: ${e.value}`;
     });
-    return `{\n${result.join('\n\t')}}`;
+    return `{\n${result.join('\n')}}`;
   };
-  return render(ast);
+  return render(ast); */
 };
 export default gendiff;
