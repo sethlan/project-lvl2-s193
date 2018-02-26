@@ -1,6 +1,6 @@
 {
   "name": "gendiff-sethlans",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "cli-compare two files and show diffirencies",
   "main": "src/index.js",
   "scripts": {
