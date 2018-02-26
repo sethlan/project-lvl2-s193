@@ -18,6 +18,6 @@ program
   .parse(process.argv);
 if (!(path1 === undefined || path2 === undefined)) {
   // const diff = gendiff(fs.readFileSync(path1), fs.readFileSync(path2));
-  const diff = gendiff(path1, path2, program.option = 'default');
+  const diff = gendiff(path1, path2, program.format);
   console.log(diff);
 }

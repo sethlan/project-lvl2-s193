@@ -1,6 +1,6 @@
 {
   "name": "gendiff-sethlans",
-  "version": "0.5.0",
+  "version": "0.7.0",
   "description": "cli-compare two files and show diffirencies",
   "main": "src/index.js",
   "scripts": {
@@ -8,7 +8,8 @@
     "babel-node": "babel-node",
     "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
     "prepublishOnly": "npm run build",
-    "eslint": "eslint"
+    "eslint": "eslint",
+    "json": "eslint --format json ."
   },
   "files": [
     "dist"

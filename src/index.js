@@ -88,7 +88,11 @@ const gendiff = (path1, path2, format = 'default') => {
     });
     return result.join('\n');
   };
-  const render = format === 'default' ? defaultRender : plainRender;
-  return render(diffAst);
+  const formatTypes = {
+    default: defaultRender,
+    plain: plainRender,
+    json: JSON.stringify,
+  };
+  return formatTypes[format](diffAst);
 };
 export default gendiff;
