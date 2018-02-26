@@ -1,7 +1,7 @@
 ---
 
 plugins:
-  - jest
+  - node
 
 extends:
   - 'plugin:flowtype/recommended'

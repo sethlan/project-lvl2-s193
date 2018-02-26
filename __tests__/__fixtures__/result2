@@ -1,7 +1,7 @@
 {
-	- plugins: jest
-	+ plugins: jest
+	- plugins: ["jest"]
+	+ plugins: ["node"]
 	- parser: babel-eslint
-	- extends: plugin:jest/recommended
-	+ extends: plugin:flowtype/recommended
+	- extends: ["plugin:jest/recommended"]
+	+ extends: ["plugin:flowtype/recommended"]
 }

@@ -1,13 +1,13 @@
 {
-	- plugins: jest
-	+ plugins: jest,flowtype
+	- plugins: ["jest"]
+	+ plugins: ["jest","flowtype"]
 	  env: {
 		- node: true
 		+ jest: true
 	}
 	  parser: babel-eslint
-	- extends: airbnb-base,plugin:jest/recommended
-	+ extends: airbnb-base,plugin:jest/recommended,plugin:flowtype/recommended
+	- extends: ["airbnb-base","plugin:jest/recommended"]
+	+ extends: ["airbnb-base","plugin:jest/recommended","plugin:flowtype/recommended"]
 	  rules: {
 		  no-console: 0
 		+ react/jsx-no-bind: 0
