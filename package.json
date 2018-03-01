@@ -1,10 +1,10 @@
 {
   "name": "gendiff-sethlans",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "cli-compare two files and show diffirencies",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --watch",
     "babel-node": "babel-node",
     "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
     "prepublishOnly": "npm run build",
