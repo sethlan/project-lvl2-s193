@@ -9,7 +9,8 @@
     "build": "NODE_ENV=production babel src --out-dir dist --source-maps inline",
     "prepublishOnly": "npm run build",
     "eslint": "eslint",
-    "json": "eslint --format json ."
+    "json": "eslint --format json .",
+    "coverage": "jest --coverage"
   },
   "files": [
     "dist"
